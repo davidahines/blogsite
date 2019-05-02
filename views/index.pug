@@ -2,8 +2,8 @@ extends layout
 
 block content
   h1 David A Hines
-  h2 #{posts[0].title}
-  p #{posts[0].body}
+  h2 #{post.title}
+  p #{post.body}
   div
    form(action='/insert_post',method='post')
     div(id='title_div',data-role='fieldcontain')
@@ -11,16 +11,16 @@ block content
         p
           label(for='title') Title
         p
-          input(id='title',type='text',value='',placeholder='')
+          input(id='title',name='title',type='text',value='',placeholder='')
       fieldset(data-role='controlgroup')
         p
           label(for='body') Body
         p
-          textarea(id='body',cols="40", rows="5", type='textarea',value='',placeholder='')
+          textarea(id='body',name='body',cols="40", rows="5", type='textarea',value='',placeholder='')
       fieldset(data-role='controlgroup')
         label(for='author_name') Author Name
-        input(id='author_name',type='text',value='',placeholder='')
+        input(id='author_name',name='author_name',type='text',value='',placeholder='')
         label(for='author_email') Author Email
-        input(id='author_email',type='text',value='',placeholder='')
+        input(id='author_email',name='author_email',type='text',value='',placeholder='')
     div(data-role='fieldcontain')   
-       input(type='submit',value='Submit Post',data-transition='fade', data-theme='c')  
+       input(type='submit',value='Submit Post',data-transition='fade', data-theme='c')

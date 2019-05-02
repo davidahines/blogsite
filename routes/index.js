@@ -11,17 +11,14 @@ router.get('/', function(req, res, next) {
         if (!err) {
             console.log("We are connected");
             var postsCollection = db.collection('posts');
-            postsCollection.find({}).toArray(function(err, postDocs) {
+            postsCollection.find().limit(1).sort({ $natural : -1 }).toArray(function(err, postDoc) {
                 console.log("Printing Posts from Array");
-                postDocs.forEach(function(post) {
-                    postsArray.push(post);
-                });
                 response = {
-                    "posts": postsArray
+                    "post:": postDoc[0]
                 };
                 console.log(response);
                 res.render('index', {
-                    posts: postsArray
+                    post: postDoc[0]
                 });
                 //res.end(JSON.stringify(response));
             });
@@ -32,7 +29,8 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.post('/insert_post', function(req, res, next) {
+
+ router.post('/insert_post', function(req, res, next) {
     var postsArray = [];
     MongoClient.connect(database.url, function(err, db) {
         var db = db.db(database.database);
@@ -44,14 +42,14 @@ router.post('/insert_post', function(req, res, next) {
               title: req.body.title,
               body: req.body.body,
               author: {
-                name: req.body.name,
-                email: req.body.email
+                name: req.body.author_name,
+                email: req.body.author_email
               }
             }
             postsCollection.insertOne(postObject, function(err, response) {
                 console.log("Inserted Post: "+JSON.stringify(response.ops[0]));
                 res.render('index', {
-                    posts: response.ops[0]
+                    post: response.ops[0]
                 });
             });
         } else {
@@ -60,5 +58,4 @@ router.post('/insert_post', function(req, res, next) {
         }
     });
 });
-
 module.exports = router;
